@@ -1,0 +1,35 @@
+<!--index.wxml-->
+<view class="container">
+	<view class="userinfo">
+		<button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+		<block wx:else>
+			<image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+			<text class="userinfo-nickname">{{userInfo.nickName}}</text>
+		</block>
+	</view>
+
+	<view class="page-body">
+		<view class="martgintop30">
+			<view class="page-section-title">请选择人数，并填写昵称</view>
+			<form bindsubmit='startGame'>
+				<radio-group name="rg" bindchange="radioChange" class="martgintop30">
+					<label class="radio">
+						<radio name="1" value="1" checked="true" />1
+					</label>
+					<label name="2" class="radio">
+						<radio value="2" />2
+					</label>
+					<label name="3" class="radio">
+						<radio value="3" />3
+					</label>
+				</radio-group>
+
+				<input wx:if="{{num>0}}" name='n1' class="modal-input martgintop30" auto-focus placeholder="昵称1" maxlength="5" value="{{userInfo.nickName}}" />
+				<input wx:if="{{num>1}}" name='n2' class="modal-input martgintop30" placeholder="昵称2" maxlength="5" />
+				<input wx:if="{{num>2}}" name='n3' class="modal-input martgintop30" placeholder="昵称3" maxlength="5" />
+				<button form-type="submit" type='primary' class="martgintop30"> 开始</button>
+			</form>
+		</view>
+	</view>
+
+</view>

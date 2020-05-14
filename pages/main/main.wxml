@@ -1,0 +1,17 @@
+<!--pages/main/main.wxml-->
+<view class="container">
+
+	<view class='attrs' wx:for='{{wordMap}}' wx:key="index" wx:for-index="key">
+		<!-- <text>{{index}}:{{item}}</text> -->
+		<button type="primary" plain="true" bindtap="openTap" data-key="{{key}}" data-value="{{item}}">{{key}}</button>
+	</view>
+
+	<!--弹窗-->
+	<view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
+	<view class="modal-dialog" wx:if="{{showModal}}">
+    <view class="modal-title">{{currentWord}}</view>
+		<view class="modal-footer">
+			<view class="btn-confirm" bindtap="onConfirm" data-status="confirm">记住了</view>
+		</view>
+	</view>
+</view>
