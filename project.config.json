@@ -26,7 +26,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "2.11.0",
 	"appid": "wxa83fc82123d0f0fe",
-	"projectname": "undercover",
+	"projectname": "miniprogram-1",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},

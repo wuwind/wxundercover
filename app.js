@@ -34,6 +34,33 @@ App({
     })
   },
   globalData: {
+    URL: 'http://120.79.223.156:8090/undercover/api/',
     userInfo: null
+  },
+  /**
+   * 封装wx.request请求
+   * method： 请求方式
+   * url: 请求地址
+   * data： 要传递的参数
+   * callback： 请求成功回调函数
+   * errFun： 请求失败回调函数
+   **/
+  wxRequest(method, url, data, callback, errFun) {
+    wx.request({
+      url: this.globalData.URL + url,
+      method: method,
+      data: data,
+      header: {
+        'content-type': method == 'GET' ? 'application/json' : 'application/x-www-form-urlencoded',
+        'Accept': 'application/json'
+      },
+      dataType: 'json',
+      success: function (res) {
+        callback(res);
+      },
+      fail: function (res) {
+        errFun(res);
+      }
+    })
   }
 })

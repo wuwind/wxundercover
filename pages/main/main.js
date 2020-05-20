@@ -1,4 +1,5 @@
 // pages/main/main.js
+const app = getApp();
 Page({
 
   /**
@@ -21,27 +22,43 @@ Page({
       //console.log(name1Input, name2Input,name3Input,num)
     })
     let that = this;
-    wx.request({
-      url: 'http://172.18.0.6:8080/undercover/api/addUser',
-      data: {
-        wxId: jsonData.userInfo.avatarUrl,
-        wxCode: jsonData.code,
-        wxPhoto: jsonData.userInfo.avatarUrl,
-        wxName: jsonData.userInfo.nickName,
-        users: jsonData.name1Input + "," + jsonData.name2Input + "," + jsonData.name3Input,
-        num: jsonData.num
-      },
-      header: {
-        'content-type': 'application/json' // 默认值
-      },
-      success(res) {
-        console.log(res.data)
-        that.setData({
-          wordMap:res.data.data
-        })
-      }
+    let data = {
+      wxId: jsonData.userInfo.avatarUrl,
+      wxCode: jsonData.code,
+      wxPhoto: jsonData.userInfo.avatarUrl,
+      wxName: jsonData.userInfo.nickName,
+      users: jsonData.name1Input + "," + jsonData.name2Input + "," + jsonData.name3Input,
+      num: jsonData.num
+    };
+    app.wxRequest('GET', 'addUser',data, (res)=> {
+      console.log(res.data)
+      console.log(res.data.data)
+      this.setData({
+        wordMap:res.data.data
+      })
+    }, (res)=>{
+      
     })
-
+    // wx.request({
+    //   url: 'http://172.18.0.6:8080/undercover/api/addUser',
+    //   data: {
+    //     wxId: jsonData.userInfo.avatarUrl,
+    //     wxCode: jsonData.code,
+    //     wxPhoto: jsonData.userInfo.avatarUrl,
+    //     wxName: jsonData.userInfo.nickName,
+    //     users: jsonData.name1Input + "," + jsonData.name2Input + "," + jsonData.name3Input,
+    //     num: jsonData.num
+    //   },
+    //   header: {
+    //     'content-type': 'application/json' // 默认值
+    //   },
+    //   success(res) {
+    //     console.log(res.data)
+    //     that.setData({
+    //       wordMap:res.data.data
+    //     })
+    //   }
+    // })
   },
   openTap: function (e) {
     console.log(e.currentTarget.dataset.value)
