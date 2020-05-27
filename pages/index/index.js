@@ -7,28 +7,28 @@ Page({
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    num:1
+    num: 1
   },
   //事件处理函数
-  bindViewTap: function() {
+  bindViewTap: function () {
     wx.navigateTo({
       url: '../logs/logs'
     })
   },
-  name1Input:function(e) {
-    console.log('name1Input：',e.detail.value);
+  name1Input: function (e) {
+    console.log('name1Input：', e.detail.value);
     this.setData({
-      name1Input:e.detail.value
+      name1Input: e.detail.value
     })
   },
-  name2Input:function(e) {
-    console.log('name2Input',e.detail.value);
+  name2Input: function (e) {
+    console.log('name2Input', e.detail.value);
     this.setData({
       name2Input: e.detail.value
     })
   },
-  name3Input:function(e) {
-    console.log('name3Input',e.detail.value);
+  name3Input: function (e) {
+    console.log('name3Input', e.detail.value);
     this.setData({
       name3Input: e.detail.value
     })
@@ -40,30 +40,42 @@ Page({
       num
     })
   },
-  startGame: function(e) {
-    console.log(this.data.name1Input,this.data.name2Input, this.data.name3Input, this.data.num)
+  startGame: function (e) {
+    console.log(this.data.name1Input, this.data.name2Input, this.data.name3Input, this.data.num)
     console.log(e.detail.value.n1)
-    let that = this
-    if(e.detail.value.rg >= 2 && "" == e.detail.value.n2) {
+    console.log(e.detail.value.rg)
+    if ("" == e.detail.value.n1.trim()) {
       wx.showToast({
-        title: '请输入昵称2',
+        title: '请输入昵称1',
         icon: 'none'
       })
       return
     }
-    if(e.detail.value.rg >= 3 && "" == e.detail.value.n3) {
+    if (e.detail.value.rg >= 2 && ("" == e.detail.value.n2.trim() || e.detail.value.n1.trim() == e.detail.value.n2.trim())) {
       wx.showToast({
-        title: '请输入昵称3',
+        title: '请输入昵称2,且不重复',
+        icon: 'none'
+      })
+      return
+    }
+    if (e.detail.value.rg >= 3 && ("" == e.detail.value.n3.trim() ||
+      e.detail.value.n3.trim() == e.detail.value.n2.trim() ||
+      e.detail.value.n3.trim() == e.detail.value.n1.trim())) {
+      wx.showToast({
+        title: '请输入昵称3,且不重复',
         icon: 'none'
       })
       return
     }
     this.setData({
-      name1Input:e.detail.value.n1,name2Input:e.detail.value.n2,name3Input: e.detail.value.n3,num: e.detail.value.rg
+      name1Input: e.detail.value.n1,
+      name2Input: e.detail.value.n2,
+      name3Input: e.detail.value.n3,
+      num: e.detail.value.rg
     })
     wx.navigateTo({
-      url: '../main/main?json='+JSON.stringify(this.data),
-      success:function(res) {
+      url: '../main/main?json=' + JSON.stringify(this.data),
+      success: function (res) {
         // res.eventChannel.emit("resData",{photo:that.data.userInfo.avatarUrl, name:that.data.userInfo.nickName, name1Input:e.detail.value.n1,name2Input:e.detail.value.n2,name3Input: e.detail.value.n3,num: e.detail.value.rg})
       }
     })
@@ -71,24 +83,24 @@ Page({
   onLoad: function () {
     let that = this
     wx.login({
-      success (res) {
+      success(res) {
         if (res.code) {
           console.log('res.code  ' + res.code)
           that.setData({
-            code:res.code
+            code: res.code
           })
         } else {
           console.log('登录失败！' + res.errMsg)
         }
       }
     })
- 
+
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
         hasUserInfo: true
       })
-    } else if (this.data.canIUse){
+    } else if (this.data.canIUse) {
       // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
       // 所以此处加入 callback 以防止这种情况
       app.userInfoReadyCallback = res => {
@@ -109,9 +121,9 @@ Page({
         }
       })
     }
-    
+
   },
-  getUserInfo: function(e) {
+  getUserInfo: function (e) {
     console.log(e)
     app.globalData.userInfo = e.detail.userInfo
     this.setData({

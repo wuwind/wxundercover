@@ -34,7 +34,7 @@ App({
     })
   },
   globalData: {
-    URL: 'http://120.79.223.156:8090/undercover/api/',
+    URL: 'http://localhost:8080//undercover/api/',
     userInfo: null
   },
   /**

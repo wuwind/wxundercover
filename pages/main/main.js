@@ -7,7 +7,6 @@ Page({
    */
   data: {
     wordMap: {
-     
     }
   },
 
@@ -17,11 +16,15 @@ Page({
   onLoad: function (options) {
     console.log(options.json)
     const jsonData = JSON.parse(options.json)
+    // jsonData.userInfo.avatarUrl = new Date().getTime()
+    console.log(jsonData.userInfo.avatarUrl)
+    this.setData({
+      jsonData: jsonData
+    })
     const eventChannel = this.getOpenerEventChannel()
     eventChannel.on("resData", function (photo, nickName, name1Input, name2Input, name3Input, num) {
       //console.log(name1Input, name2Input,name3Input,num)
     })
-    let that = this;
     let data = {
       wxId: jsonData.userInfo.avatarUrl,
       wxCode: jsonData.code,
@@ -65,7 +68,7 @@ Page({
     let that = this
     wx.showModal({
       title: '提示',
-      content: '你是否要打开' + e.currentTarget.dataset.key + '的卡片',
+      content: e.currentTarget.dataset.key + ' 你是否要打开?',
       success(res) {
         if (res.confirm) {
           console.log('用户点击确定')
@@ -113,6 +116,14 @@ Page({
     this.hideModal();
     var wordMap = this.data.wordMap
     delete wordMap[this.data.currentKey]
+    let data = {
+      key: this.data.currentKey,
+      wxId: this.data.jsonData.userInfo.avatarUrl
+    };
+    app.wxRequest('GET', 'ready',data, (res)=> {
+    }, (res)=>{
+      
+    })
     this.setData({
       wordMap
     })
