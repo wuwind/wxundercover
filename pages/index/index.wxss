@@ -38,3 +38,8 @@
   box-sizing: border-box;
   color: #333;
 }
+.horizontal {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}

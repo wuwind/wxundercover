@@ -16,7 +16,7 @@ Page({
   onLoad: function (options) {
     console.log(options.json)
     const jsonData = JSON.parse(options.json)
-    // jsonData.userInfo.avatarUrl = new Date().getTime()
+    jsonData.userInfo.avatarUrl = new Date().getTime()
     console.log(jsonData.userInfo.avatarUrl)
     this.setData({
       jsonData: jsonData
@@ -40,7 +40,18 @@ Page({
         wordMap:res.data.data
       })
     }, (res)=>{
-      
+      wx.showToast({
+        title: '获取失败',
+        icon: 'fail',
+        duration: 2000,
+        success:function() {
+          setTimeout(() => {
+            wx.navigateBack({
+              complete: (res) => {},
+            })
+          }, 2000);
+        }
+      })
     })
     // wx.request({
     //   url: 'http://172.18.0.6:8080/undercover/api/addUser',
@@ -132,8 +143,16 @@ Page({
       wx.showToast({
         title: '准备开始',
         icon: 'success',
-        duration: 3000
+        duration: 2000,
+        success:function() {
+          setTimeout(() => {
+            wx.navigateBack({
+              complete: (res) => {},
+            })
+          }, 2000);
+        }
       })
+     
     }
   },
   /**
