@@ -14,8 +14,7 @@ Page({
     //   city_id: '003',
     //   city_name: '100'
     // }],
-    options:[],
-    selected: {},
+    // selected: {},
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
@@ -69,6 +68,20 @@ Page({
     })
   },
   startGame: function (e) {
+
+    this.setData({
+      result: [{
+        id: '001',
+        name: '007'
+      }, {
+        id: '002',
+        name: '008'
+      }, {
+        id: '003',
+        name: '100'
+      }]
+    })
+    
     console.log(this.data.name1Input, this.data.name2Input, this.data.name3Input, this.data.num)
     console.log(e.detail.value.n1)
     console.log(e.detail.value.rg)
@@ -112,16 +125,9 @@ Page({
   onLoad: function () {
     // this.setData({
     //   options: [{
-    //     city_id: '001',
-    //     city_name: '007'
-    //   }, {
-    //     city_id: '002',
-    //     city_name: '008'
-    //   }, {
-    //     city_id: '003',
-    //     city_name: '100'
-    //   }],
-    //   name1Input: "e.detail.value.n1",
+    //         city_id: '001',
+    //         city_name: '007'
+    //       }]
     // })
     app.wxRequest('GET', 'getAllRooms', null, (res) => {
       var array = new Array();
@@ -144,6 +150,12 @@ Page({
         title: '检查网络',
         icon: 'fail',
         duration: 2000
+      })
+      this.setData({
+        options: [{
+              city_id: '001',
+              city_name: '007'
+            }]
       })
     })
     let that = this

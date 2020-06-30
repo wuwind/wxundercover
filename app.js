@@ -52,6 +52,7 @@ App({
       url: this.globalData.URL + url,
       method: method,
       data: data,
+      timeout:10000,
       header: {
         'content-type': method == 'GET' ? 'application/json' : 'application/x-www-form-urlencoded',
         'Accept': 'application/json'

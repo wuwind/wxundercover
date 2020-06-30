@@ -33,7 +33,7 @@
 					</view>
 				</view>
 
-				<button form-type="submit" type='primary' class="martgintop30"> 开始</button>
+				<button form-type="submit" type='primary' class="martgintop30"> 开始{{res}}</button>
 			</form>
 		</view>
 	</view>

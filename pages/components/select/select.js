@@ -39,6 +39,17 @@ Component({
     openClose() {
       this.setData({
         isShow: !this.data.isShow
+      });
+      let result = []
+      if (this.data.key !== 'id' || this.data.text !== 'name') {       
+        for (let item of this.data.options) {
+          let { [this.data.key]: id, [this.data.text]: name } = item
+          result.push({ id, name })
+        }
+      }
+      this.setData({
+        current: Object.assign({}, this.data.defaultOption),
+        result: result
       })
     },
 
