@@ -22,10 +22,17 @@
 						<radio value="3" />3
 					</label>
 				</radio-group>
-				<button  wx:if="{{!userInfo.nickName}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo" class="martgintop30" type='default'>获取昵称</button>
+				<button wx:if="{{!userInfo.nickName}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo" class="martgintop30" type='default'>获取昵称</button>
 				<input wx:if="{{num>0}}" name='n1' class="modal-input martgintop30" placeholder="昵称1" maxlength="5" value="{{userInfo.nickName}}" />
 				<input wx:if="{{num>1}}" name='n2' class="modal-input martgintop30" placeholder="昵称2" maxlength="5" />
 				<input wx:if="{{num>2}}" name='n3' class="modal-input martgintop30" placeholder="昵称3" maxlength="5" />
+
+				<view class="martgintop30" bindtap="close">
+					<view class="select-wrap">
+						<select id="select" options="{{options}}" key="city_id" text="city_name" bind:change="change"></select>
+					</view>
+				</view>
+
 				<button form-type="submit" type='primary' class="martgintop30"> 开始</button>
 			</form>
 		</view>

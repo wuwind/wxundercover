@@ -27,6 +27,7 @@ App({
               if (this.userInfoReadyCallback) {
                 this.userInfoReadyCallback(res)
               }
+              
             }
           })
         }
@@ -34,7 +35,8 @@ App({
     })
   },
   globalData: {
-    URL: 'http://localhost:8080//undercover/api/',
+    // URL: 'https://nyxkkkw.icu/undercover/api/',
+    URL: 'http://172.18.0.6:8080/undercover/api/',
     userInfo: null
   },
   /**

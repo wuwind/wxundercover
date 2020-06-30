@@ -4,10 +4,38 @@ const app = getApp()
 
 Page({
   data: {
+    // options: [{
+    //   city_id: '001',
+    //   city_name: '007'
+    // }, {
+    //   city_id: '002',
+    //   city_name: '008'
+    // }, {
+    //   city_id: '003',
+    //   city_name: '100'
+    // }],
+    options:[],
+    selected: {},
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     num: 1
+  },
+  change(e) {
+    this.setData({
+      selected: {
+        ...e.detail
+      }
+    })
+    wx.showToast({
+      title: `${this.data.selected.id} - ${this.data.selected.name}`,
+      icon: 'success',
+      duration: 1000
+    })
+  },
+  close() {
+    // 关闭select
+    this.selectComponent('#select').close()
   },
   //事件处理函数
   bindViewTap: function () {
@@ -59,8 +87,8 @@ Page({
       return
     }
     if (e.detail.value.rg >= 3 && ("" == e.detail.value.n3.trim() ||
-      e.detail.value.n3.trim() == e.detail.value.n2.trim() ||
-      e.detail.value.n3.trim() == e.detail.value.n1.trim())) {
+        e.detail.value.n3.trim() == e.detail.value.n2.trim() ||
+        e.detail.value.n3.trim() == e.detail.value.n1.trim())) {
       wx.showToast({
         title: '请输入昵称3,且不重复',
         icon: 'none'
@@ -73,14 +101,51 @@ Page({
       name3Input: e.detail.value.n3,
       num: e.detail.value.rg
     })
-    wx.navigateTo({
-      url: '../main/main?json=' + JSON.stringify(this.data),
-      success: function (res) {
-        // res.eventChannel.emit("resData",{photo:that.data.userInfo.avatarUrl, name:that.data.userInfo.nickName, name1Input:e.detail.value.n1,name2Input:e.detail.value.n2,name3Input: e.detail.value.n3,num: e.detail.value.rg})
-      }
-    })
+
+    // wx.navigateTo({
+    //   url: '../main/main?json=' + JSON.stringify(this.data),
+    //   success: function (res) {
+    //     // res.eventChannel.emit("resData",{photo:that.data.userInfo.avatarUrl, name:that.data.userInfo.nickName, name1Input:e.detail.value.n1,name2Input:e.detail.value.n2,name3Input: e.detail.value.n3,num: e.detail.value.rg})
+    //   }
+    // })
   },
   onLoad: function () {
+    // this.setData({
+    //   options: [{
+    //     city_id: '001',
+    //     city_name: '007'
+    //   }, {
+    //     city_id: '002',
+    //     city_name: '008'
+    //   }, {
+    //     city_id: '003',
+    //     city_name: '100'
+    //   }],
+    //   name1Input: "e.detail.value.n1",
+    // })
+    app.wxRequest('GET', 'getAllRooms', null, (res) => {
+      var array = new Array();
+      // for (var i = 0; i < res.data.data.length; i++) {
+      //   var map = new Map();
+      //   var temp = res.data.data[i]
+      //   map.set('city_id', temp.id)
+      //   map.set('city_name', temp.name)
+      //   array.push(map)
+      // }
+      this.setData({
+        options: [{
+              city_id: '001',
+              city_name: '007'
+            }]
+      })
+
+    }, (res) => {
+      wx.showToast({
+        title: '检查网络',
+        icon: 'fail',
+        duration: 2000
+      })
+    })
     let that = this
     wx.login({
       success(res) {
