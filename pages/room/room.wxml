@@ -1,2 +1,8 @@
 <!--pages/room/room.wxml-->
-<text>pages/room/room.wxml</text>
+<view class='gridview'>
+	<block wx:for="{{listdata}}" wx:key="key">
+		<view class='gridview-item'  bindtap="openTap" data-key="{{key}}" data-value="{{item}}" data-index="{{index}}">
+			<text>第{{item.gameId}}场</text>
+		</view>
+	</block>
+</view>

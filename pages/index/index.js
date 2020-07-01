@@ -68,20 +68,6 @@ Page({
     })
   },
   startGame: function (e) {
-
-    this.setData({
-      result: [{
-        id: '001',
-        name: '007'
-      }, {
-        id: '002',
-        name: '008'
-      }, {
-        id: '003',
-        name: '100'
-      }]
-    })
-    
     console.log(this.data.name1Input, this.data.name2Input, this.data.name3Input, this.data.num)
     console.log(e.detail.value.n1)
     console.log(e.detail.value.rg)
@@ -115,47 +101,75 @@ Page({
       num: e.detail.value.rg
     })
 
-    // wx.navigateTo({
-    //   url: '../main/main?json=' + JSON.stringify(this.data),
-    //   success: function (res) {
-    //     // res.eventChannel.emit("resData",{photo:that.data.userInfo.avatarUrl, name:that.data.userInfo.nickName, name1Input:e.detail.value.n1,name2Input:e.detail.value.n2,name3Input: e.detail.value.n3,num: e.detail.value.rg})
-    //   }
-    // })
-  },
-  onLoad: function () {
-    // this.setData({
-    //   options: [{
-    //         city_id: '001',
-    //         city_name: '007'
-    //       }]
-    // })
-    app.wxRequest('GET', 'getAllRooms', null, (res) => {
-      var array = new Array();
-      // for (var i = 0; i < res.data.data.length; i++) {
-      //   var map = new Map();
-      //   var temp = res.data.data[i]
-      //   map.set('city_id', temp.id)
-      //   map.set('city_name', temp.name)
-      //   array.push(map)
-      // }
+    var mUsers = this.data.name1Input
+    if(this.data.num > 1) {
+      mUsers =  mUsers + "," + this.data.name2Input
+    } 
+    if(this.data.num > 2) {
+      mUsers =  mUsers + "," + this.data.name3Input
+    }
+    let data = {
+      wxCode: this.data.code,
+      wxPhoto: this.data.userInfo.avatarUrl,
+      wxName: this.data.userInfo.nickName,
+      users: mUsers,
+      num: this.data.num,
+      roomId: this.data.selected.id
+    };
+    app.wxRequest('GET', 'addUsers',data, (res)=> {
+      console.log(res.data)
+      console.log(res.data.data)
       this.setData({
-        options: [{
-              city_id: '001',
-              city_name: '007'
-            }]
+        users:res.data.data
       })
-
-    }, (res) => {
+      wx.setStorage({
+        data: res.data.data,
+        key: 'userIds',
+      })
+    }, (res)=>{
       wx.showToast({
         title: '检查网络',
         icon: 'fail',
         duration: 2000
       })
+    })
+    wx.navigateTo({
+      url: '../room/room?userIds='+res.data.data,// + JSON.stringify(this.data),
+      success: function (res) {
+        // res.eventChannel.emit("resData",{photo:that.data.userInfo.avatarUrl, name:that.data.userInfo.nickName, name1Input:e.detail.value.n1,name2Input:e.detail.value.n2,name3Input: e.detail.value.n3,num: e.detail.value.rg})
+      }
+    })
+  },
+  onLoad: function () {
+    wx.getStorage({
+      key: 'userIds', success(res) {
+        console.log("userIds:"+res.data)
+        wx.navigateTo({
+          url: '../room/room?userIds='+res.data,
+        })
+      }
+    })
+    app.wxRequest('GET', 'getAllRooms', null, (res) => {
+      var result = []
+      for (let item of res.data.data) {
+        let {
+          'id': id,
+          'name': name
+        } = item
+        result.push({
+          id,
+          name
+        })
+      }
+      console.log(result)
       this.setData({
-        options: [{
-              city_id: '001',
-              city_name: '007'
-            }]
+        options: result
+      })
+    }, (res) => {
+      wx.showToast({
+        title: '检查网络',
+        icon: 'fail',
+        duration: 2000
       })
     })
     let that = this

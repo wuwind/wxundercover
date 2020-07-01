@@ -1,1 +1,13 @@
 /* pages/room/room.wxss */
+
+.gridview{
+  margin: 5rpx 10rpx 5rpx 10rpx;
+}
+
+.gridview-item{
+  margin: 1%;
+  width: 48%;
+  height: 300rpx;
+  float: left;
+  background: #99333333
+}

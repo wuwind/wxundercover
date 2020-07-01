@@ -8,29 +8,46 @@ Page({
   data: {
 
   },
-
+  openTap: function (e) {
+    wx.navigateTo({
+      url: '../main/main?userData='+JSON.stringify(e.currentTarget.dataset.value),
+    })
+  },
+  refresh: function (userData) {
+    this.setData({
+      listdata: userData
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    app.wxRequest('GET', 'getAllRooms', null, (res)=> {
-      console.log(res.data)
-      console.log(res.data.data)
-      this.setData({
+    var mUserIds = options.userIds
+    var that = this
+    wx.getStorage({
+      key: 'user_data',
+      success(res) {
+        console.log("user_data:" + res.data)
+        let userData = JSON.parse(res.data)
+        that.refresh(userData)
+      }
+    })
 
+    let data = {
+      userIds: mUserIds
+    }
+    app.wxRequest('GET', 'getGameByUser', data, (res) => {
+      console.log(res.data.data)
+      wx.setStorage({
+        data: JSON.stringify(res.data.data),
+        key: 'user_data',
       })
-    }, (res)=>{
+      this.refresh(res.data.data)
+    }, (res) => {
       wx.showToast({
-        title: '获取失败',
+        title: '请稍后刷新',
         icon: 'fail',
-        duration: 2000,
-        success:function() {
-          setTimeout(() => {
-            wx.navigateBack({
-              complete: (res) => {},
-            })
-          }, 2000);
-        }
+        duration: 2000
       })
     });
   },

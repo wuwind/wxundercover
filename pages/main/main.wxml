@@ -1,9 +1,9 @@
 <!--pages/main/main.wxml-->
 <view class="container">
 
-	<view class='attrs' wx:for='{{wordMap}}' wx:key="index" wx:for-index="key">
+	<view class='attrs' wx:for='{{userWords}}' wx:key="index" wx:for-index="key">
 		<!-- <text>{{index}}:{{item}}</text> -->
-		<button type="primary" plain="true" bindtap="openTap" data-key="{{key}}" data-value="{{item}}" data-index="{{index}}">{{key}}</button>
+		<button type="primary" plain="true" bindtap="openTap" data-key="{{key}}" data-value="{{item}}" data-index="{{index}}">{{item.userName}}</button>
 	</view>
 
 	<!--弹窗-->

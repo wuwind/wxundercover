@@ -14,45 +14,48 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options.json)
-    const jsonData = JSON.parse(options.json)
-    jsonData.userInfo.avatarUrl = new Date().getTime()
-    console.log(jsonData.userInfo.avatarUrl)
+    console.log(options.userData)
+    const jsonData = JSON.parse(options.userData)
     this.setData({
-      jsonData: jsonData
+      userWords: jsonData.userWords
     })
-    const eventChannel = this.getOpenerEventChannel()
-    eventChannel.on("resData", function (photo, nickName, name1Input, name2Input, name3Input, num) {
-      //console.log(name1Input, name2Input,name3Input,num)
-    })
-    let data = {
-      wxId: jsonData.userInfo.avatarUrl,
-      wxCode: jsonData.code,
-      wxPhoto: jsonData.userInfo.avatarUrl,
-      wxName: jsonData.userInfo.nickName,
-      users: jsonData.name1Input + "," + jsonData.name2Input + "," + jsonData.name3Input,
-      num: jsonData.num
-    };
-    app.wxRequest('GET', 'addUser',data, (res)=> {
-      console.log(res.data)
-      console.log(res.data.data)
-      this.setData({
-        wordMap:res.data.data
-      })
-    }, (res)=>{
-      wx.showToast({
-        title: '获取失败',
-        icon: 'fail',
-        duration: 2000,
-        success:function() {
-          setTimeout(() => {
-            wx.navigateBack({
-              complete: (res) => {},
-            })
-          }, 2000);
-        }
-      })
-    })
+    // jsonData.userInfo.avatarUrl = new Date().getTime()
+    // console.log(jsonData.userInfo.avatarUrl)
+    // this.setData({
+    //   jsonData: jsonData
+    // })
+    // const eventChannel = this.getOpenerEventChannel()
+    // eventChannel.on("resData", function (photo, nickName, name1Input, name2Input, name3Input, num) {
+    //   //console.log(name1Input, name2Input,name3Input,num)
+    // })
+    // let data = {
+    //   wxId: jsonData.userInfo.avatarUrl,
+    //   wxCode: jsonData.code,
+    //   wxPhoto: jsonData.userInfo.avatarUrl,
+    //   wxName: jsonData.userInfo.nickName,
+    //   users: jsonData.name1Input + "," + jsonData.name2Input + "," + jsonData.name3Input,
+    //   num: jsonData.num
+    // };
+    // app.wxRequest('GET', 'addUser',data, (res)=> {
+    //   console.log(res.data)
+    //   console.log(res.data.data)
+    //   this.setData({
+    //     wordMap:res.data.data
+    //   })
+    // }, (res)=>{
+    //   wx.showToast({
+    //     title: '获取失败',
+    //     icon: 'fail',
+    //     duration: 2000,
+    //     success:function() {
+    //       setTimeout(() => {
+    //         wx.navigateBack({
+    //           complete: (res) => {},
+    //         })
+    //       }, 2000);
+    //     }
+    //   })
+    // })
     // wx.request({
     //   url: 'http://172.18.0.6:8080/undercover/api/addUser',
     //   data: {
@@ -76,16 +79,17 @@ Page({
   },
   openTap: function (e) {
     console.log(e.currentTarget.dataset.value)
+    console.log(e.currentTarget.dataset)
     let that = this
     wx.showModal({
       title: '提示',
-      content: e.currentTarget.dataset.key + ' 你是否要打开?',
+      content: e.currentTarget.dataset.value.userName + ' 你是否要打开?',
       success(res) {
         if (res.confirm) {
           console.log('用户点击确定')
           that.setData({
             showModal: true,
-            currentWord: e.currentTarget.dataset.value,
+            currentWord: e.currentTarget.dataset.value.word,
             currentKey: e.currentTarget.dataset.key
           });
         } else if (res.cancel) {
@@ -125,21 +129,22 @@ Page({
    */
   onConfirm: function () {
     this.hideModal();
-    var wordMap = this.data.wordMap
-    delete wordMap[this.data.currentKey]
+    var userWords = this.data.userWords
+    var mUserId = userWords[this.data.currentKey].userId
+    userWords.splice(this.data.currentKey,1)
+    // delete userWords[this.data.currentKey]
     let data = {
-      key: this.data.currentKey,
-      wxId: this.data.jsonData.userInfo.avatarUrl
+      userId: mUserId
     };
     app.wxRequest('GET', 'ready',data, (res)=> {
     }, (res)=>{
       
     })
     this.setData({
-      wordMap
+      userWords
     })
-    console.log(wordMap)
-    if(JSON.stringify(wordMap) == JSON.stringify({})) {
+    console.log(userWords)
+    if(JSON.stringify(userWords) == JSON.stringify([])) {
       wx.showToast({
         title: '准备开始',
         icon: 'success',
