@@ -4,17 +4,6 @@ const app = getApp()
 
 Page({
   data: {
-    // options: [{
-    //   city_id: '001',
-    //   city_name: '007'
-    // }, {
-    //   city_id: '002',
-    //   city_name: '008'
-    // }, {
-    //   city_id: '003',
-    //   city_name: '100'
-    // }],
-    // selected: {},
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
@@ -35,12 +24,7 @@ Page({
   close() {
     // 关闭select
     this.selectComponent('#select').close()
-  },
-  //事件处理函数
-  bindViewTap: function () {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
+    console.log('close');
   },
   name1Input: function (e) {
     console.log('name1Input：', e.detail.value);
@@ -69,8 +53,8 @@ Page({
   },
   startGame: function (e) {
     console.log(this.data.name1Input, this.data.name2Input, this.data.name3Input, this.data.num)
-    console.log(e.detail.value.n1)
-    console.log(e.detail.value.rg)
+    // console.log(e.detail.value.n1)
+    // console.log(e.detail.value.rg)
     if ("" == e.detail.value.n1.trim()) {
       wx.showToast({
         title: '请输入昵称1',
@@ -94,19 +78,26 @@ Page({
       })
       return
     }
+    if(!this.data.selected) {
+      wx.showToast({
+        title: '请选择房间',
+        icon: 'none'
+      })
+      return
+    }
     this.setData({
-      name1Input: e.detail.value.n1,
-      name2Input: e.detail.value.n2,
-      name3Input: e.detail.value.n3,
+    //   name1Input: e.detail.value.n1,
+    //   name2Input: e.detail.value.n2,
+    //   name3Input: e.detail.value.n3,
       num: e.detail.value.rg
     })
 
-    var mUsers = this.data.name1Input
-    if(this.data.num > 1) {
-      mUsers =  mUsers + "," + this.data.name2Input
-    } 
-    if(this.data.num > 2) {
-      mUsers =  mUsers + "," + this.data.name3Input
+    var mUsers = e.detail.value.n1
+    if (this.data.num > 1) {
+      mUsers = mUsers + "," + e.detail.value.n2
+    }
+    if (this.data.num > 2) {
+      mUsers = mUsers + "," + e.detail.value.n3
     }
     let data = {
       wxCode: this.data.code,
@@ -116,40 +107,44 @@ Page({
       num: this.data.num,
       roomId: this.data.selected.id
     };
-    app.wxRequest('GET', 'addUsers',data, (res)=> {
+    app.wxRequest('GET', 'addUsers', data, (res) => {
       console.log(res.data)
+      if(res.data.code == 0) {
+        wx.showToast({
+          title: res.data.msg,
+          icon: 'fail',
+          duration: 2000
+        })
+        return
+      }
       console.log(res.data.data)
       this.setData({
-        users:res.data.data
+        users: res.data.data
       })
       wx.setStorage({
         data: res.data.data,
         key: 'userIds',
       })
-    }, (res)=>{
+      this.setData({
+        selected:null
+      })
+      let userIds = this.data.users
+      wx.navigateTo({
+        url: '../room/room?userIds=' + userIds, // + JSON.stringify(this.data),
+        success: function (res) {
+          // res.eventChannel.emit("resData",{photo:that.data.userInfo.avatarUrl, name:that.data.userInfo.nickName, name1Input:e.detail.value.n1,name2Input:e.detail.value.n2,name3Input: e.detail.value.n3,num: e.detail.value.rg})
+        }
+      })
+    }, (res) => {
       wx.showToast({
         title: '检查网络',
         icon: 'fail',
         duration: 2000
       })
     })
-    wx.navigateTo({
-      url: '../room/room?userIds='+res.data.data,// + JSON.stringify(this.data),
-      success: function (res) {
-        // res.eventChannel.emit("resData",{photo:that.data.userInfo.avatarUrl, name:that.data.userInfo.nickName, name1Input:e.detail.value.n1,name2Input:e.detail.value.n2,name3Input: e.detail.value.n3,num: e.detail.value.rg})
-      }
-    })
   },
-  onLoad: function () {
-    wx.getStorage({
-      key: 'userIds', success(res) {
-        console.log("userIds:"+res.data)
-        wx.navigateTo({
-          url: '../room/room?userIds='+res.data,
-        })
-      }
-    })
-    app.wxRequest('GET', 'getAllRooms', null, (res) => {
+  getRooms: function () {
+    app.wxRequest('GET', 'getAllOpenRooms', null, (res) => {
       var result = []
       for (let item of res.data.data) {
         let {
@@ -172,6 +167,8 @@ Page({
         duration: 2000
       })
     })
+  },
+  onLoad: function () {
     let that = this
     wx.login({
       success(res) {
@@ -221,5 +218,28 @@ Page({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
-  }
+  },
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    let that = this
+    wx.getStorage({
+      key: 'userIds',
+      success(res) {
+        console.log("userIds:" + res.data)
+        if (res.data) {
+          wx.navigateTo({
+            url: '../room/room?userIds=' + res.data,
+          })
+        } else {
+          that.getRooms()
+        }
+      },
+      fail() {
+        that.getRooms()
+      }
+    })
+  },
+
 })

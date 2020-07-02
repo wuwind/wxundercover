@@ -1,8 +1,10 @@
 <!--pages/room/room.wxml-->
 <view class='gridview'>
-	<block wx:for="{{listdata}}" wx:key="key">
+	<button wx:if="{{show_refresh}}" form-type="submit" type='primary' class="martgintop30" bindtap="refreshClick"> 刷新</button>
+	<block wx:for="{{listdata}}" wx:key="key" >
 		<view class='gridview-item'  bindtap="openTap" data-key="{{key}}" data-value="{{item}}" data-index="{{index}}">
 			<text>第{{item.gameId}}场</text>
 		</view>
 	</block>
+
 </view>

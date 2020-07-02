@@ -7,7 +7,7 @@ Component({
     defaultOption: {
       type: Object,
       value: {
-        id: '000',
+        id: '0',
         name: '房间'
       }
     },
@@ -32,7 +32,6 @@ Component({
         current: dataset,
         isShow: false
       });
-
       // 调用父组件方法，并传参
       this.triggerEvent("change", { ...dataset })
     },
@@ -41,7 +40,6 @@ Component({
         isShow: !this.data.isShow
       })
     },
-
     // 此方法供父组件调用
     close() {
       this.setData({
@@ -52,6 +50,17 @@ Component({
   lifetimes: {
     attached() {
    
+    }
+  },
+  pageLifetimes: {
+    show: function() {
+      // 页面被展示
+    },
+    hide: function() {
+      // 页面被隐藏
+    },
+    resize: function(size) {
+      // 页面尺寸变化
     }
   },
   observers: {

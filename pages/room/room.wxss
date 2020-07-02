@@ -9,5 +9,6 @@
   width: 48%;
   height: 300rpx;
   float: left;
-  background: #99333333
+  background: #99333333;
 }
+

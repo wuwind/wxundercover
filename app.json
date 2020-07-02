@@ -3,8 +3,7 @@
     "pages/index/index",
     "pages/room/room",
     "pages/main/main",
-    "pages/logs/logs",
-    "pages/room/room_list/room_list"
+    "pages/logs/logs"
   ],
   "window": {
     "backgroundTextStyle": "light",

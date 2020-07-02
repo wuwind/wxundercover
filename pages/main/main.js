@@ -6,8 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    wordMap: {
-    }
+    wordMap: {}
   },
 
   /**
@@ -15,67 +14,12 @@ Page({
    */
   onLoad: function (options) {
     console.log(options.userData)
+    console.log(options.index)
     const jsonData = JSON.parse(options.userData)
     this.setData({
-      userWords: jsonData.userWords
+      userWords: jsonData.userWords,
+      index: options.index
     })
-    // jsonData.userInfo.avatarUrl = new Date().getTime()
-    // console.log(jsonData.userInfo.avatarUrl)
-    // this.setData({
-    //   jsonData: jsonData
-    // })
-    // const eventChannel = this.getOpenerEventChannel()
-    // eventChannel.on("resData", function (photo, nickName, name1Input, name2Input, name3Input, num) {
-    //   //console.log(name1Input, name2Input,name3Input,num)
-    // })
-    // let data = {
-    //   wxId: jsonData.userInfo.avatarUrl,
-    //   wxCode: jsonData.code,
-    //   wxPhoto: jsonData.userInfo.avatarUrl,
-    //   wxName: jsonData.userInfo.nickName,
-    //   users: jsonData.name1Input + "," + jsonData.name2Input + "," + jsonData.name3Input,
-    //   num: jsonData.num
-    // };
-    // app.wxRequest('GET', 'addUser',data, (res)=> {
-    //   console.log(res.data)
-    //   console.log(res.data.data)
-    //   this.setData({
-    //     wordMap:res.data.data
-    //   })
-    // }, (res)=>{
-    //   wx.showToast({
-    //     title: '获取失败',
-    //     icon: 'fail',
-    //     duration: 2000,
-    //     success:function() {
-    //       setTimeout(() => {
-    //         wx.navigateBack({
-    //           complete: (res) => {},
-    //         })
-    //       }, 2000);
-    //     }
-    //   })
-    // })
-    // wx.request({
-    //   url: 'http://172.18.0.6:8080/undercover/api/addUser',
-    //   data: {
-    //     wxId: jsonData.userInfo.avatarUrl,
-    //     wxCode: jsonData.code,
-    //     wxPhoto: jsonData.userInfo.avatarUrl,
-    //     wxName: jsonData.userInfo.nickName,
-    //     users: jsonData.name1Input + "," + jsonData.name2Input + "," + jsonData.name3Input,
-    //     num: jsonData.num
-    //   },
-    //   header: {
-    //     'content-type': 'application/json' // 默认值
-    //   },
-    //   success(res) {
-    //     console.log(res.data)
-    //     that.setData({
-    //       wordMap:res.data.data
-    //     })
-    //   }
-    // })
   },
   openTap: function (e) {
     console.log(e.currentTarget.dataset.value)
@@ -131,33 +75,48 @@ Page({
     this.hideModal();
     var userWords = this.data.userWords
     var mUserId = userWords[this.data.currentKey].userId
-    userWords.splice(this.data.currentKey,1)
+    userWords.splice(this.data.currentKey, 1)
     // delete userWords[this.data.currentKey]
     let data = {
       userId: mUserId
     };
-    app.wxRequest('GET', 'ready',data, (res)=> {
-    }, (res)=>{
-      
+    app.wxRequest('GET', 'ready', data, (res) => {}, (res) => {
+
     })
     this.setData({
       userWords
     })
     console.log(userWords)
-    if(JSON.stringify(userWords) == JSON.stringify([])) {
-      wx.showToast({
-        title: '准备开始',
-        icon: 'success',
-        duration: 2000,
-        success:function() {
-          setTimeout(() => {
-            wx.navigateBack({
-              complete: (res) => {},
-            })
-          }, 2000);
+    if (JSON.stringify(userWords) == JSON.stringify([])) {
+      let that = this
+      wx.getStorage({
+        key: 'user_data',
+        success(res) {
+          var userData = JSON.parse(res.data)
+          userData.splice(that.data.index, 1)
+          wx.setStorage({
+            data: JSON.stringify(userData),
+            key: 'user_data',
+          })
+        },
+        complete() {
+          wx.showToast({
+            title: '准备开始',
+            icon: 'success',
+            duration: 2000,
+            success: function () {
+              setTimeout(() => {
+                wx.navigateBack({
+                  complete: (res) => {},
+                })
+              }, 2000);
+            }
+          })
         }
       })
-     
+
+
+
     }
   },
   /**
