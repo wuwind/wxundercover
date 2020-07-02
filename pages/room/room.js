@@ -9,6 +9,14 @@ Page({
     show_refresh: 0
   },
   openTap: function (e) {
+    if( e.currentTarget.dataset.index > 0) {
+      wx.showToast({
+        title: '点击第1个',
+        icon: 'fail',
+        duration: 2000
+      })
+      return
+    }
     wx.navigateTo({
       url: '../main/main?userData=' + JSON.stringify(e.currentTarget.dataset.value) + "&index=" + e.currentTarget.dataset.index,
     })
@@ -97,7 +105,7 @@ Page({
     wx.getStorage({
       key: 'user_data',
       success(res) {
-        if (res) {
+        if (res.data) {
           console.log("user_data:" + res.data)
           let userData = JSON.parse(res.data)
           that.refresh(userData)
