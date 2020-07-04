@@ -1,0 +1,6 @@
+<view class="container">
+  <form bindsubmit="bindFormSubmitAdvise">
+    <textarea placeholder="添加惩罚" name="textarea" value="{{area_value}}"/>
+    <button form-type="submit" type='primary'> 添加 </button>
+  </form>
+</view>

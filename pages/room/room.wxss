@@ -12,3 +12,10 @@
   background: #99333333;
 }
 
+.area {
+  border:"1";
+  border-color:"#333333";
+}
+.martgintop30 {
+  margin-top: 40rpx;
+}

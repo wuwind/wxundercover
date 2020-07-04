@@ -85,10 +85,16 @@ Page({
       })
       return
     }
+    if(this.data.selected.id == 1) {
+      //进入advise
+      var userName = this.data.userInfo.nickName
+      wx.navigateTo({
+        url: '../advise/advise?userName=' + userName,
+      })
+      return
+    }
+
     this.setData({
-    //   name1Input: e.detail.value.n1,
-    //   name2Input: e.detail.value.n2,
-    //   name3Input: e.detail.value.n3,
       num: e.detail.value.rg
     })
 

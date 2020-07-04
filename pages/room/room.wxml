@@ -1,10 +1,19 @@
 <!--pages/room/room.wxml-->
-<view class='gridview'>
-	<button wx:if="{{show_refresh}}" form-type="submit" type='primary' class="martgintop30" bindtap="refreshClick"> 刷新</button>
-	<block wx:for="{{listdata}}" wx:key="key" >
-		<view class='gridview-item'  bindtap="openTap" data-key="{{key}}" data-value="{{item}}" data-index="{{index}}">
-			<text>第{{item.gameId}}场</text>
+<view>
+	<view class='gridview'>
+		<block wx:for="{{listdata}}" wx:key="key">
+			<view class='gridview-item' bindtap="openTap" data-key="{{key}}" data-value="{{item}}" data-index="{{index}}">
+				<text>第{{item.gameId}}场</text>
+			</view>
+		</block>
+	</view>
+	<view>
+		<button wx:if="{{show_refresh}}" form-type="submit" type='primary' class="martgintop30" bindtap="refreshClick"> 刷新</button>
+	</view>
+	<view class="martgintop30">
+		<button wx:if="{{punish && show_refresh}}" form-type="submit" type='primary' bindtap="adviseClick"> 惩罚</button>
+	</view>
+	<view class="container" wx:if="{{punish && show_refresh}}">
+		<textarea placeholder="" name="textarea" value="{{area_value}}" disabled="true" placeholder-style="color:black"/>
 		</view>
-	</block>
-
 </view>
