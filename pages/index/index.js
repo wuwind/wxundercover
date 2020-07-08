@@ -97,8 +97,14 @@ Page({
     this.setData({
       num: e.detail.value.rg
     })
-
+    
     var mUsers = e.detail.value.n1
+    if(mUsers == '999999') {
+      wx.navigateTo({
+        url: '../room/room_users/room_users?roomId=' + this.data.selected.id+'&roomName='+this.data.selected.name
+      })
+      return
+    }
     if (this.data.num > 1) {
       mUsers = mUsers + "," + e.detail.value.n2
     }

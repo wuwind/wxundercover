@@ -4,7 +4,8 @@
     "pages/room/room",
     "pages/main/main",
     "pages/logs/logs",
-    "pages/advise/advise"
+    "pages/advise/advise",
+    "pages/room/room_users/room_users"
   ],
   "window": {
     "backgroundTextStyle": "light",
