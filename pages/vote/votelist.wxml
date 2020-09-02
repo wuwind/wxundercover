@@ -1,0 +1,6 @@
+
+
+<view wx:for="{{votes}}" class="list-item" bindtap="voteDetail" data-vote="{{item}}">
+   {{index}} {{item.title}}
+</view>
+<button type="primary" class="bootom_right" bindtap="add">add</button>

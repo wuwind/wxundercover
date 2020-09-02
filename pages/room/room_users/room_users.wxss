@@ -1,1 +1,30 @@
-/* pages/room/room_users/room_users.wxss */
+.gridview {
+  margin: 5rpx 10rpx 5rpx 10rpx;
+}
+
+.gridview-item {
+  margin: 1%;
+  width: 30%;
+  max-width: 30%;
+  height: 200rpx;
+  float: left;
+  background: #99333333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.center-grid {
+  display: table;
+  margin: 0 auto;
+  line-height: 70rpx;
+}
+
+.area {
+  border: "1";
+  border-color: "#333333";
+}
+
+.martgintop30 {
+  margin-top: 40rpx;
+}

@@ -7,11 +7,11 @@ Page({
   data: {
     show_refresh: 0,
     show_advise: false,
-    area_value:'',
-    getAdviseCount:0,
-    punish:0
+    area_value: '',
+    getAdviseCount: 0,
+    punish: 0
   },
-  
+
   openTap: function (e) {
     if (e.currentTarget.dataset.index > 0) {
       wx.showToast({
@@ -23,6 +23,11 @@ Page({
     }
     wx.navigateTo({
       url: '../main/main?userData=' + JSON.stringify(e.currentTarget.dataset.value) + "&index=" + e.currentTarget.dataset.index,
+    })
+  },
+  hidetap() {
+    wx.navigateTo({
+      url: '../room/room_users/room_users?roomId=' + this.data.roomId + '&roomName=' + this.data.roomName
     })
   },
   refresh: function (userData) {
@@ -45,7 +50,7 @@ Page({
     this.requestAdvise()
   },
   requestAdvise() {
-    if(this.data.getAdviseCount >= 3) {
+    if (this.data.getAdviseCount >= 3) {
       wx.showToast({
         title: "你没有机会更换了",
         icon: 'fail',
@@ -63,11 +68,11 @@ Page({
         return
       }
       console.log(res.data)
-      let count = this.data.getAdviseCount+1
+      let count = this.data.getAdviseCount + 1
       this.setData({
-        show_advise:true,
-        area_value:res.data.data.content,
-        getAdviseCount:count
+        show_advise: true,
+        area_value: res.data.data.content,
+        getAdviseCount: count
       })
     })
   },
@@ -120,9 +125,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var mUserIds = options.userIds
     this.setData({
-      userIds: mUserIds
+      userIds: options.userIds,
+      roomId: options.roomId,
+      roomName: options.roomName
     })
     this.requestGames()
     this.requestRoom()
@@ -138,7 +144,9 @@ Page({
     app.wxRequest('GET', 'getRoomByUserId', data, (res) => {
       console.log(res.data)
       this.setData({
-        punish: res.data.data.punish
+        punish: res.data.data.punish,
+        roomId: res.data.data.id,
+        roomName: res.data.data.name
       })
       wx.setNavigationBarTitle({
         title: res.data.data.name

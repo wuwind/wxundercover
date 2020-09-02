@@ -1,0 +1,10 @@
+/* pages/vote/votelist.wxss */
+
+.list-item {
+  margin: 1%;
+  width: 100%;
+  height: 90rpx;
+  float: left;
+  background: #4afcf333;
+  line-height: 90rpx
+}

@@ -3,7 +3,7 @@
 	<view class='gridview'>
 		<block wx:for="{{listdata}}" wx:key="key">
 			<view class='gridview-item' bindtap="openTap" data-key="{{key}}" data-value="{{item}}" data-index="{{index}}">
-				<text>第{{item.gameId}}场</text>
+				<text class="center-grid">第{{item.gameId}}场</text>
 			</view>
 		</block>
 	</view>
@@ -14,6 +14,7 @@
 		<button wx:if="{{punish && show_refresh}}" form-type="submit" type='primary' bindtap="adviseClick"> 惩罚</button>
 	</view>
 	<view class="container" wx:if="{{punish && show_refresh}}">
-		<textarea placeholder="" name="textarea" value="{{area_value}}" disabled="true" placeholder-style="color:black"/>
+		<textarea placeholder="" name="textarea" value="{{area_value}}" disabled="true" placeholder-style="color:black" />
 		</view>
+		<view bindlongtap="hidetap" class="right_bottom"></view>
 </view>

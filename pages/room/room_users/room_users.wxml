@@ -1,2 +1,11 @@
-<!--pages/room/room_users/room_users.wxml-->
-<text>pages/room/room_users/room_users.wxml</text>
+	
+  <view class='gridview'>
+		<block wx:for="{{users}}" wx:key="key">
+			<view class='gridview-item' bindtap="openTap" data-key="{{key}}" data-value="{{item}}" data-index="{{index}}" bindlongpress="handleLongPress">
+      	<text class="center-grid">{{item.id}}</text>
+				<text class="center-grid">{{item.users}}</text>
+			</view>
+		</block>
+	</view>
+
+

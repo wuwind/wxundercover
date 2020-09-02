@@ -1,10 +1,10 @@
 /* pages/room/room.wxss */
 
-.gridview{
+.gridview {
   margin: 5rpx 10rpx 5rpx 10rpx;
 }
 
-.gridview-item{
+.gridview-item {
   margin: 1%;
   width: 48%;
   height: 300rpx;
@@ -12,10 +12,28 @@
   background: #99333333;
 }
 
-.area {
-  border:"1";
-  border-color:"#333333";
+.center-grid {
+  display: table;
+  margin: 0 auto;
+  line-height: 200rpx
 }
+
+.area {
+  border: "1";
+  border-color: "#333333";
+}
+
 .martgintop30 {
   margin-top: 40rpx;
+}
+
+/*右下角*/
+.right_bottom {
+  width: 100rpx;
+  height: 100rpx;
+  background: transparent;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  z-index: 999999;
 }

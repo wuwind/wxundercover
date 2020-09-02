@@ -180,17 +180,52 @@ Page({
       })
     })
   },
+  onShareAppMessage: function () {
+    return {
+      title: '自定义转发标题'
+    }
+  },
   onLoad: function () {
     let that = this
+    // wx.login({
+    //   success(res) {
+    //     if (res.code) {
+    //       console.log('res.code  ' + res.code)
+    //       that.setData({
+    //         code: res.code
+    //       })
+    //     } else {
+    //       console.log('登录失败！' + res.errMsg)
+    //     }
+    //   }
+    // })
+
     wx.login({
-      success(res) {
-        if (res.code) {
-          console.log('res.code  ' + res.code)
-          that.setData({
-            code: res.code
+      success: res => {
+        // 发送 res.code 到后台换取 openId, sessionKey
+        console.log(res.code)
+        if(res.code){
+          // console.log(res.code)
+          wx.request({
+            url: 'https://api.weixin.qq.com/sns/jscode2session',//微信服务器获取appid的网址 不用变
+            method:'post',//必须是post方法
+            data:{
+              js_code:res.code,
+              appid:'wxa83fc82123d0f0fe',
+              secret:'059942c06789f6e9b39a21d34b993eda',
+              grant_type:'authorization_code'
+            },
+            header: {
+              'content-type': 'application/x-www-form-urlencoded',
+            },
+            success:function(response){
+              console.log(response.data)
+              wx.setStorageSync('app_openid', response.data.openid); //将openid存入本地缓存
+              wx.setStorageSync('sessionKey', response.data.session_key)//将session_key 存入本地缓存命名为SessionKey
+            }
           })
-        } else {
-          console.log('登录失败！' + res.errMsg)
+        }else{
+          console.log("登陆失败");
         }
       }
     })

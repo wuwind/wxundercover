@@ -1,16 +1,21 @@
 {
   "pages": [
+   
+    "pages/vote/votelist",
+    "pages/vote/vote_detail/vote_detail",
+    "pages/vote/vote_add/vote_add",
     "pages/index/index",
+    "pages/room/room_users/room_users",
     "pages/room/room",
     "pages/main/main",
     "pages/logs/logs",
     "pages/advise/advise",
-    "pages/room/room_users/room_users"
+    "pages/activity/activity"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "探索生活",
     "navigationBarTextStyle": "black"
   },
   "style": "v2",
