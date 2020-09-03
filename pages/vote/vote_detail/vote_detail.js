@@ -17,12 +17,12 @@ Page({
   },
   add: function (options) {
     console.log(this.data.vote.votes[this.data.select]);
+    this.setData({
+      canIUse: wx.canIUse('button.open-type.getUserInfo')
+    })
     if (!this.data.userId) {
       wx.showToast({
         title: '请先登录'
-      })
-      this.setData({
-        canIUse: wx.canIUse('button.open-type.getUserInfo')
       })
       if (!this.data.canIUse) {
         //直接登录
