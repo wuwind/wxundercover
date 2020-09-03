@@ -6,13 +6,20 @@ Page({
    * 页面的初始数据
    */
   data: {
-    title: '内容',
-    items: [6, 7, 9]
+    title: '标题',
+    items: ["",""]
   },
   del: function (options) {
     console.log(options.currentTarget.dataset.value)
     var temp = this.data.items
     temp.splice(options.currentTarget.dataset.value, 1);
+    this.setData({
+      items: temp
+    })
+  },
+  addItem: function (options) {
+    var temp = this.data.items
+    temp.push("");
     this.setData({
       items: temp
     })
@@ -26,7 +33,14 @@ Page({
       items:this.data.items
     }
     app.wxRequest('POST','addVoteItems', data, res=>{
-
+      if(res.data.code==1) {
+        wx.showToast({
+          title: '添加成功',
+        })
+        wx.navigateBack({
+          delta: 0,
+        })
+      }
     })
   },
   bindinput: function (options) {

@@ -7,8 +7,7 @@ Page({
    */
   data: {
     vote: null,
-    select:0,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    select: 0
   },
   select: function (options) {
     console.log(options);
@@ -22,8 +21,11 @@ Page({
       wx.showToast({
         title: '请先登录'
       })
-      if(!this.data.canIUse) {
-//直接登录
+      this.setData({
+        canIUse: wx.canIUse('button.open-type.getUserInfo')
+      })
+      if (!this.data.canIUse) {
+        //直接登录
       }
       return;
     }
@@ -39,7 +41,7 @@ Page({
         wx.showToast({
           title: res.data.msg
         })
-        if(res.data.code == -1) {
+        if (res.data.code == -1) {
           this.setData({
             userId: null
           })
@@ -63,7 +65,7 @@ Page({
       success: res => {
         // 发送 res.code 到后台换取 openId, sessionKey
         console.log(res.code)
-        if(res.code){
+        if (res.code) {
           let data = {
             wxCode: res.code,
             wxPhoto: e.detail.userInfo.avatarUrl,
@@ -71,7 +73,7 @@ Page({
           };
           app.wxRequest('GET', 'addWxUsers', data, (res) => {
             console.log(res.data)
-            if(res.data.code == 0) {
+            if (res.data.code == 0) {
               wx.showToast({
                 title: res.data.msg,
                 icon: 'fail',
@@ -98,7 +100,7 @@ Page({
               duration: 2000
             })
           })
-        }else{
+        } else {
           wx.showToast({
             title: '登陆失败',
           })
@@ -114,8 +116,8 @@ Page({
     var that = this
     wx.getStorage({
       key: 'userId',
-      success (res) {
-       
+      success(res) {
+
         that.setData({
           userId: res.data
         })
@@ -124,14 +126,14 @@ Page({
     if (options.share && wx.canIUse('hideHomeButton')) {
       wx.hideHomeButton()
     }
-    let voteId =  options.voteId
-    if(voteId == null)
-      voteId = 15
+    let voteId = options.voteId
+    if (voteId == null)
+      voteId = 0
     let data = {
       voteId: voteId
     };
     app.wxRequest('POST', 'getVoteById', data, (res) => {
-      if(res.data.code == 0) {
+      if (res.data.code == 0) {
         wx.showToast({
           title: res.data.msg,
           icon: 'fail',
@@ -193,7 +195,7 @@ Page({
   onShareAppMessage: function () {
     return {
       title: '投票',
-      path: 'pages/vote/vote_detail/vote_detail?share=1&voteId='+this.data.vote.id
+      path: 'pages/vote/vote_detail/vote_detail?share=1&voteId=' + this.data.vote.id
     }
   }
 })

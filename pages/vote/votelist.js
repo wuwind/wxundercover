@@ -14,10 +14,7 @@ Page({
       url: './vote_add/vote_add',
     })
   },
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
+  getVotes:function() {
     app.wxRequest('GET', 'getAllVotes', null, res => {
       if (res.data.code == 1) {
         this.setData({
@@ -26,6 +23,15 @@ Page({
       }
       console.log(res.data)
     });
+    wx.stopPullDownRefresh({
+      success: (res) => {},
+    })
+  },
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+
   },
   voteDetail: function (e) {
     console.log(e.currentTarget.dataset.vote)
@@ -44,7 +50,12 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.getVotes()
+    console.log(app.globalData.permission)
+    console.log(app.globalData.permission.indexOf('add_vote'))
+    this.setData({
+      add_vote_permission:app.globalData.permission.indexOf('add_vote')>-1
+    })
   },
 
   /**
@@ -65,7 +76,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.getVotes()
   },
 
   /**

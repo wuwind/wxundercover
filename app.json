@@ -1,9 +1,10 @@
 {
   "pages": [
-   
+    
     "pages/vote/votelist",
-    "pages/vote/vote_detail/vote_detail",
     "pages/vote/vote_add/vote_add",
+    "pages/vote/vote_detail/vote_detail",
+    
     "pages/index/index",
     "pages/room/room_users/room_users",
     "pages/room/room",
