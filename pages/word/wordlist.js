@@ -11,7 +11,7 @@ Page({
 
   add: function (option) {
     wx.navigateTo({
-      url: './vote_add/vote_add',
+      url: './word_add/word_add',
     })
   },
   getVotes:function() {
@@ -36,7 +36,7 @@ Page({
   voteDetail: function (e) {
     console.log(e.currentTarget.dataset.vote)
     wx.navigateTo({
-      url: './vote_detail/vote_detail?voteId=' + e.currentTarget.dataset.vote.id,
+      url: './word_detail/word_detail?voteId=' + e.currentTarget.dataset.vote.id,
     })
   },
   /**

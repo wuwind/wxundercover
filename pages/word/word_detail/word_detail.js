@@ -7,7 +7,10 @@ Page({
    */
   data: {
     vote: null,
-    select: 0
+    select: 0,
+    word: '',
+    selectWord: '选词',
+    showCount: 0
   },
   select: function (options) {
     console.log(options);
@@ -16,7 +19,7 @@ Page({
     })
   },
   add: function (options) {
-    console.log(this.data.vote.votes[this.data.select]);
+    // console.log(this.data.vote.votes[this.data.select]);
     this.setData({
       canIUse: wx.canIUse('button.open-type.getUserInfo')
     })
@@ -29,7 +32,12 @@ Page({
       }
       return;
     }
-
+    if (this.data.showCount == 0) {
+      wx.navigateBack({
+        delta: 1,
+      })
+      return
+    }
     let data = {
       userId: this.data.userId,
       voteId: this.data.vote.id,
@@ -47,9 +55,6 @@ Page({
           })
         }
       } else {
-        wx.showToast({
-          title: "投票完成"
-        })
         this.data.vote.votes[this.data.select].count = Number(this.data.vote.votes[this.data.select].count) + 1
         console.log(this.data.vote);
         this.setData({
@@ -117,7 +122,6 @@ Page({
     wx.getStorage({
       key: 'userId',
       success(res) {
-
         that.setData({
           userId: res.data
         })
@@ -158,7 +162,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.setData({
+      word: app.globalData.properties.word,
+      selectWord: app.globalData.properties.selectWord,
+      showCount: app.globalData.properties.showCount
+    })
   },
 
   /**
@@ -194,8 +202,8 @@ Page({
    */
   onShareAppMessage: function () {
     return {
-      title: '投票',
-      path: 'pages/vote/vote_detail/vote_detail?share=1&voteId=' + this.data.vote.id
+      title: this.data.selectWord,
+      path: 'pages/word/word_detail/word_detail?share=1&voteId=' + this.data.vote.id
     }
   }
 })

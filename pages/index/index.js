@@ -288,5 +288,10 @@ Page({
       }
     })
   },
+  selectWord:function() {
+    wx.navigateTo({
+      url: '/pages/word/wordlist',
+    })
+  }
 
 })

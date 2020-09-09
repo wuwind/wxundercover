@@ -40,12 +40,10 @@ App({
     onShow: function (options) {
       wx.getStorage({
         key: 'userId',
-        success: res => {
+        complete: res => {
           console.log(res.data)
-          if (!res.data)
-            return
           let data = {
-            userId: res.data
+            userId: res.data ? res.data : 0
           }
           this.wxRequest('POST', 'getPermission', data, res => {
             if (res.data.code == 1) {
@@ -55,12 +53,20 @@ App({
           })
         }
       })
+      this.wxRequest('POST', 'getProperties', null, res => {
+        if (res.data.code == 1) {
+          this.globalData.properties = res.data.data
+          getCurrentPages()[0].onShow()
+          console.log(res.data.data)
+        }
+      })
     },
     globalData: {
       URL: 'https://nyxkkkw.icu/undercover/api/',
       // URL: 'http://172.18.0.6:8080/undercover/api/',
       userInfo: null,
-      permission: []
+      permission: [],
+      properties: []
     },
     /**
      * 封装wx.request请求

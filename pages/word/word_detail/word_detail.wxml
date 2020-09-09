@@ -6,11 +6,11 @@
 			<radio value="{{item.value}}" checked="{{index==select}}" />
 			{{item.item}}
 		</view>
-		<view style="flex-direction:row; display:flex;">
+		<view wx:if="{{showCount != 0}}" style="flex-direction:row; display:flex;">
 			<view class="vote_line" style="width:{{item.count*50}}rpx;" />
-			<view class="vote_text_line">{{item.count}}票</view>
+			<view class="vote_text_line">{{item.count}}{{word}}</view>
 		</view>
 	</view>
-	<button type='primary' style="margin-top:100rpx" bindtap="add">投票</button>
+	<button type='primary' style="margin-top:100rpx" bindtap="add">{{selectWord}}</button>
 	<button wx:if="{{canIUse && !userId}}" type='primary' style="margin-top:100rpx" bindgetuserinfo="bindGetUserInfo" open-type="getUserInfo">登录</button>
 </view>

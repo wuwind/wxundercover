@@ -29,7 +29,7 @@
 
 				<view class="martgintop30" bindtap="close">
 					<view class="select-wrap">
-						<select id="select" options="{{options}}" key="id" text="name" bind:change="change" ></select>
+						<select id="select" options="{{options}}" key="id" text="name" bind:change="change"></select>
 					</view>
 				</view>
 
@@ -37,5 +37,7 @@
 			</form>
 		</view>
 	</view>
+
+	<button class="martgintop30" bindtap="selectWord">选词</button>
 
 </view>
