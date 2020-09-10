@@ -1,1 +1,7 @@
-/* pages/launcher/launcher.wxss */
+.img-avatar {
+  width: 500rpx;
+  height: 500rpx;
+  border-radius: 50%;
+  align-content: center;
+  align-items: center;
+}

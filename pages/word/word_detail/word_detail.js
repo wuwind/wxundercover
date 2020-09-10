@@ -127,9 +127,9 @@ Page({
         })
       }
     })
-    if (options.share && wx.canIUse('hideHomeButton')) {
-      wx.hideHomeButton()
-    }
+    // if (options.share && wx.canIUse('hideHomeButton')) {
+    //   wx.hideHomeButton()
+    // }
     let voteId = options.voteId
     if (voteId == null)
       voteId = 0

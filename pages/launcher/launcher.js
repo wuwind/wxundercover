@@ -1,11 +1,16 @@
 // pages/launcher/launcher.js
+const app = getApp();
+var mHits = new Array(5)
+var lancherTimer
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    launcher_img: '',
+    launcher_text: '欢迎',
+    launcher: 0
   },
 
   /**
@@ -22,11 +27,34 @@ Page({
 
   },
 
+  click: function () {
+    app.wxClickN(mHits, () => {
+      wx.navigateTo({
+        url: '/pages/word/wordlist'
+      })
+    })
+  },
+
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.data.launcher = app.globalData.properties.launcher
+    if (app.globalData.properties.launcherImg) {
+      this.setData({
+        launcher_img: app.globalData.URL.substring(0, app.globalData.URL.length - 4) + app.globalData.properties.launcherImg,
+        launcher_text: app.globalData.properties.launcherText
+      })
+    }
+    clearTimeout(lancherTimer)
+    lancherTimer = setTimeout(() => {
+      if (!this.data.launcher || this.data.launcher == 0) {
+        console.log("navigateTo index")
+        wx.navigateTo({
+          url: '/pages/index/index'
+        })
+      }
+    }, 3000);
   },
 
   /**

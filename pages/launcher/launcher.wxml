@@ -1,2 +1,4 @@
-<!--pages/launcher/launcher.wxml-->
-<text>pages/launcher/launcher.wxml</text>
+	<view class="container">
+		<image bindtap="click" class="img-avatar" src="{{launcher_img}}" mode="cover"></image>
+    <text>{{launcher_text}}</text>
+	</view>

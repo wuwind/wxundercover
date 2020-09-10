@@ -1,5 +1,7 @@
 {
   "pages": [
+    
+    "pages/launcher/launcher",
     "pages/index/index",
     "pages/room/room_users/room_users",
     "pages/word/wordlist",
@@ -9,8 +11,7 @@
     "pages/advise/advise",
     "pages/activity/activity",
     "pages/word/word_add/word_add",
-    "pages/word/word_detail/word_detail",
-    "pages/launcher/launcher"
+    "pages/word/word_detail/word_detail"
   ],
   "window": {
     "backgroundTextStyle": "light",
