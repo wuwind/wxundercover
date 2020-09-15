@@ -1,6 +1,8 @@
 <!--pages/vote/vote_detail/vote_detail.wxml-->
 <view class="page">
-	<text>{{vote.title}}</text>
+	<view class="padd">
+		{{vote.title}}
+	</view>
 	<view wx:for="{{vote.votes}}" wx:key="id" wx:for-index="index">
 		<view class="list-item" bindtap="select" data-index="{{index}}">
 			<radio value="{{item.value}}" checked="{{index==select}}" />
@@ -12,5 +14,16 @@
 		</view>
 	</view>
 	<button type='primary' style="margin-top:100rpx" bindtap="add">{{selectWord}}</button>
-	<button wx:if="{{canIUse && !userId}}" type='primary' style="margin-top:100rpx" bindgetuserinfo="bindGetUserInfo" open-type="getUserInfo">登录</button>
+	<!-- <button wx:if="{{canIUse && !userId}}" type='primary' style="margin-top:100rpx" bindgetuserinfo="bindGetUserInfo" open-type="getUserInfo">登录</button> -->
+
+	<!-- modal弹窗-->
+	<modalView show="{{showModal}}" bindcancel="modalCancel" bindconfirm='modalConfirm' single='{{single}}'>
+		<view class='modal-content'>
+			<scroll-view scroll-y class='main-content'>
+				<view>请先授权</view>
+				<button type='primary' style="margin-top:100rpx" bindgetuserinfo="bindGetUserInfo" open-type="getUserInfo">授权</button>
+			</scroll-view>
+		</view>
+	</modalView>
+
 </view>

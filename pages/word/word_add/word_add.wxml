@@ -2,8 +2,13 @@
 	<view>{{title}}</view>
 	<form bindsubmit="bindFormSubmit">
 		<view class="flex-wrp-row">
-			<textarea placeholder="输入内容" name="title" class="modal-input"/>
+			<textarea placeholder="输入内容" name="title" class="modal-input" />
 			</view>
+        <view wx:if="{{options}}" class="martgintop30" bindtap="close">
+					<view class="select-wrap">
+						<select id="select" options="{{options}}" key="id" text="name" bind:change="change" defaultOption="{{defaultOption}}"></select>
+					</view>
+				</view>
     <view wx:for="{{items}}" class="inbox">
     <input placeholder="输入选项{{index+1}}" class="modal-input" value="{{item}}" name="input{{index}}" bindinput="bindinput" data-index="{{index}}"/>
     <label wx:if="{{index>1}}" bindtap="del" data-value="{{index}}" class="add">-</label >
@@ -11,6 +16,7 @@
      <view class="flex-wrp-row">
       <label  bindtap="addItem" data-value="{{index}}" class="add">+</label >
      </view>
+   
     <button form-type="submit" type="primary"> 提交 </button>
   </form>
 </view>

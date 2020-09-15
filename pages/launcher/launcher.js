@@ -2,6 +2,7 @@
 const app = getApp();
 var mHits = new Array(5)
 var lancherTimer
+var isShow
 Page({
 
   /**
@@ -39,6 +40,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    isShow = true
     this.data.launcher = app.globalData.properties.launcher
     if (app.globalData.properties.launcherImg) {
       this.setData({
@@ -48,7 +50,7 @@ Page({
     }
     clearTimeout(lancherTimer)
     lancherTimer = setTimeout(() => {
-      if (!this.data.launcher || this.data.launcher == 0) {
+      if ((!this.data.launcher || this.data.launcher == 0) && isShow) {
         console.log("navigateTo index")
         wx.navigateTo({
           url: '/pages/index/index'
@@ -61,7 +63,7 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
+    isShow = false
   },
 
   /**

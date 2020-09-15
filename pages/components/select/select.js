@@ -33,7 +33,9 @@ Component({
         isShow: false
       });
       // 调用父组件方法，并传参
-      this.triggerEvent("change", { ...dataset })
+      this.triggerEvent("change", {
+        ...dataset
+      })
     },
     openClose() {
       this.setData({
@@ -49,38 +51,49 @@ Component({
   },
   lifetimes: {
     attached() {
-   
+
     }
   },
   pageLifetimes: {
-    show: function() {
+    show: function () {
       // 页面被展示
     },
-    hide: function() {
+    hide: function () {
       // 页面被隐藏
     },
-    resize: function(size) {
+    resize: function (size) {
       // 页面尺寸变化
     }
   },
   observers: {
-    'options': function(options) {
+    'options': function (options) {
       let result = []
-      if (this.data.key !== 'id' || this.data.text !== 'name') {  
-        console.log(this.data)     
-        console.log(this.data.key)     
+      console.log("options------")
+      if (this.data.key !== 'id' || this.data.text !== 'name') {
+        console.log(this.data)
+        console.log(this.data.key)
         for (let item of this.data.options) {
           console.log(item)
-          let { [this.data.key]: id, [this.data.text]: name } = item
-          result.push({ id, name })
+          let {
+            [this.data.key]: id, [this.data.text]: name
+          } = item
+          result.push({
+            id,
+            name
+          })
         }
-      } else{
+      } else {
         result = this.data.options
       }
       this.setData({
         current: Object.assign({}, this.data.defaultOption),
         result: result
       })
-    }
+    },
+    // 'defaultOption': function (defaultOption) {
+    //   console.log("defaultOption------")
+    //   console.log(defaultOption)
+    // }
   }
+
 })

@@ -1,6 +1,6 @@
 
 
-<view wx:for="{{votes}}" class="list-item" bindtap="voteDetail" data-vote="{{item}}">
+<view wx:for="{{votes}}" class="list-item inaline" bindtap="voteDetail" data-vote="{{item}}">
    {{index}} {{item.title}}
 </view>
 <button wx:if="{{add_vote_permission}}" type="primary" class="bootom_right" bindtap="add">add</button>

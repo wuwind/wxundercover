@@ -9,8 +9,9 @@ Page({
     vote: null,
     select: 0,
     word: '',
-    selectWord: '选词',
-    showCount: 0
+    selectWord: '　',
+    showCount: 0,
+    showModal: false // 显示modal弹窗
   },
   select: function (options) {
     console.log(options);
@@ -20,16 +21,10 @@ Page({
   },
   add: function (options) {
     // console.log(this.data.vote.votes[this.data.select]);
-    this.setData({
-      canIUse: wx.canIUse('button.open-type.getUserInfo')
-    })
     if (!this.data.userId) {
-      wx.showToast({
-        title: '请先登录'
+      this.setData({
+        showModal: true
       })
-      if (!this.data.canIUse) {
-        //直接登录
-      }
       return;
     }
     if (this.data.showCount == 0) {
@@ -43,7 +38,13 @@ Page({
       voteId: this.data.vote.id,
       idx: this.data.select
     };
+    wx.showLoading({
+      title: '',
+    })
     app.wxRequest('POST', 'vote', data, res => {
+      wx.hideLoading({
+        success: (res) => {},
+      })
       console.log(res)
       if (res.data.code != 1) {
         wx.showToast({
@@ -61,56 +62,28 @@ Page({
           vote: this.data.vote
         });
       }
+    }, res=>{
+      wx.hideLoading({
+        success: (res) => {},
+      })
     })
 
   },
   bindGetUserInfo: function (e) {
     console.log(e.detail.userInfo)
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey
-        console.log(res.code)
-        if (res.code) {
-          let data = {
-            wxCode: res.code,
-            wxPhoto: e.detail.userInfo.avatarUrl,
-            wxName: e.detail.userInfo.nickName
-          };
-          app.wxRequest('GET', 'addWxUsers', data, (res) => {
-            console.log(res.data)
-            if (res.data.code == 0) {
-              wx.showToast({
-                title: res.data.msg,
-                icon: 'fail',
-                duration: 2000
-              })
-              return
-            }
-            console.log(res.data.data)
-            this.setData({
-              userId: res.data.data
-            })
-            wx.setStorage({
-              data: res.data.data,
-              key: 'userId',
-            })
-            wx.showToast({
-              title: "登录成功",
-              duration: 2000
-            })
-          }, (res) => {
-            wx.showToast({
-              title: '检查网络',
-              icon: 'fail',
-              duration: 2000
-            })
-          })
-        } else {
-          wx.showToast({
-            title: '登陆失败',
-          })
-          console.log("登陆失败");
-        }
+    if (!e.detail.userInfo)
+      return
+    app.addWxUsers(e.detail.userInfo, (code, msg) => {
+      if (code == 1) {
+        this.setData({
+          userId: msg
+        })
+      } else {
+        wx.showToast({
+          title: msg,
+          icon: 'fail',
+          duration: 2000
+        })
       }
     })
   },
@@ -136,7 +109,13 @@ Page({
     let data = {
       voteId: voteId
     };
+    wx.showLoading({
+      title: '',
+    })
     app.wxRequest('POST', 'getVoteById', data, (res) => {
+      wx.hideLoading({
+        success: (res) => {},
+      })
       if (res.data.code == 0) {
         wx.showToast({
           title: res.data.msg,
@@ -148,6 +127,14 @@ Page({
       this.setData({
         vote: res.data.data
       })
+      if(res.data.data.properties) {
+        const properties = JSON.parse(res.data.data.properties.value)
+        this.setData({
+          word: properties.word,
+          selectWord: properties.selectWord,
+          showCount: properties.showCount
+        })
+      }
     })
   },
 
@@ -162,11 +149,12 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.setData({
-      word: app.globalData.properties.word,
-      selectWord: app.globalData.properties.selectWord,
-      showCount: app.globalData.properties.showCount
-    })
+    // this.setData({
+    //   word: app.globalData.properties.word,
+    //   selectWord: app.globalData.properties.selectWord,
+    //   showCount: app.globalData.properties.showCount,
+    //   userId: app.globalData.userId
+    // })
   },
 
   /**

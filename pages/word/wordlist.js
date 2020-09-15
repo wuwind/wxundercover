@@ -15,7 +15,10 @@ Page({
     })
   },
   getVotes:function() {
-    app.wxRequest('GET', 'getAllVotes', null, res => {
+    let data = {
+      userId:app.globalData.userId
+    }
+    app.wxRequest('GET', 'getAllVotes', data, res => {
       if (res.data.code == 1) {
         this.setData({
           votes: res.data.data

@@ -57,3 +57,7 @@
   display:flex;
   justify-content:flex-end;
 }
+
+.martgintop30 {
+  margin-top: 40rpx;
+}

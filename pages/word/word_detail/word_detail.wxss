@@ -16,3 +16,7 @@
   text-align: right;
   margin-right: 20rpx;
 }
+
+.padd{
+  padding: 30rpx;
+}

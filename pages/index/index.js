@@ -78,14 +78,14 @@ Page({
       })
       return
     }
-    if(!this.data.selected) {
+    if (!this.data.selected) {
       wx.showToast({
         title: '请选择房间',
         icon: 'none'
       })
       return
     }
-    if(this.data.selected.id == 1) {
+    if (this.data.selected.id == 1) {
       //进入advise
       var userName = this.data.userInfo.nickName
       wx.navigateTo({
@@ -97,11 +97,11 @@ Page({
     this.setData({
       num: e.detail.value.rg
     })
-    
+
     var mUsers = e.detail.value.n1
-    if(mUsers == '999999') {
+    if (mUsers == '999999') {
       wx.navigateTo({
-        url: '../room/room_users/room_users?roomId=' + this.data.selected.id+'&roomName='+this.data.selected.name
+        url: '../room/room_users/room_users?roomId=' + this.data.selected.id + '&roomName=' + this.data.selected.name
       })
       return
     }
@@ -121,7 +121,7 @@ Page({
     };
     app.wxRequest('GET', 'addUsers', data, (res) => {
       console.log(res.data)
-      if(res.data.code == 0) {
+      if (res.data.code == 0) {
         wx.showToast({
           title: res.data.msg,
           icon: 'fail',
@@ -138,7 +138,7 @@ Page({
         key: 'userIds',
       })
       this.setData({
-        selected:null
+        selected: null
       })
       let userIds = this.data.users
       wx.navigateTo({
@@ -186,76 +186,6 @@ Page({
     }
   },
   onLoad: function () {
-    let that = this
-    // wx.login({
-    //   success(res) {
-    //     if (res.code) {
-    //       console.log('res.code  ' + res.code)
-    //       that.setData({
-    //         code: res.code
-    //       })
-    //     } else {
-    //       console.log('登录失败！' + res.errMsg)
-    //     }
-    //   }
-    // })
-
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey
-        console.log(res.code)
-        if(res.code){
-          // console.log(res.code)
-          wx.request({
-            url: 'https://api.weixin.qq.com/sns/jscode2session',//微信服务器获取appid的网址 不用变
-            method:'post',//必须是post方法
-            data:{
-              js_code:res.code,
-              appid:'wxa83fc82123d0f0fe',
-              secret:'059942c06789f6e9b39a21d34b993eda',
-              grant_type:'authorization_code'
-            },
-            header: {
-              'content-type': 'application/x-www-form-urlencoded',
-            },
-            success:function(response){
-              console.log(response.data)
-              wx.setStorageSync('app_openid', response.data.openid); //将openid存入本地缓存
-              wx.setStorageSync('sessionKey', response.data.session_key)//将session_key 存入本地缓存命名为SessionKey
-            }
-          })
-        }else{
-          console.log("登陆失败");
-        }
-      }
-    })
-
-    if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      })
-    } else if (this.data.canIUse) {
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
-      }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
-        }
-      })
-    }
 
   },
   getUserInfo: function (e) {
@@ -270,6 +200,12 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    this.setData({
+      userInfo: app.globalData.userInfo,
+      hasUserInfo: true
+    })
+console.log("index onShow")
+console.log(app.globalData.userInfo)
     let that = this
     wx.getStorage({
       key: 'userIds',
@@ -288,7 +224,7 @@ Page({
       }
     })
   },
-  selectWord:function() {
+  selectWord: function () {
     wx.navigateTo({
       url: '/pages/word/wordlist',
     })

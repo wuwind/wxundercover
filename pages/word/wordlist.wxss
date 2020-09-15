@@ -8,3 +8,9 @@
   background: #4afcf333;
   line-height: 90rpx
 }
+.inaline {  
+  overflow: hidden;  
+  white-space: nowrap;  
+  text-overflow: ellipsis;  
+  /*clip  修剪文本。*/ 
+}  
